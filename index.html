@@ -213,65 +213,51 @@
         }
         .about-content {
             display: flex;
-            gap: 60px;
-            align-items: center;
+            gap: 40px;
+            align-items: stretch; /* 아이템들이 같은 높이를 갖도록 변경 */
         }
-        .about-text { flex: 2; }
+        .about-text { 
+            flex-basis: 50%; /* 왼쪽 절반 차지 */
+        }
         .about-text h3 {
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--primary-color);
+            margin-top: 0;
         }
         .about-vision {
-            flex: 1;
+            flex-basis: 50%; /* 오른쪽 절반 차지 */
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative; /* 텍스트 오버레이를 위해 position 설정 */
+            min-height: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            background-image: url('picture/main-vision.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        /* 이미지 위에 어두운 오버레이 추가하여 텍스트 가독성 확보 */
+        .vision-content-overlay {
             position: relative;
-            min-height: 200px;
-            padding: 40px 0;
-        }
-
-        .infinity-svg {
-            position: absolute;
-            width: 400px; /* <<< 이 숫자로 가로 크기를 조절하세요 */
-            height: 200px; /* <<< 이 숫자로 세로 크기를 조절하세요 */
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-        }
-
-        .infinity-svg path {
-            stroke: #BDBDBD;
-            stroke-width: 3; /* <<< 이 숫자로 선의 굵기를 조절하세요 */
-            fill: none;
-        }
-
-        .vision-content {
-            position: relative;
-            z-index: 1;
             text-align: center;
-            /* background-color 속성을 삭제하여 투명하게 만듭니다 */
-            padding: 10px 25px;
-            border-radius: 100px;
+            color: var(--white);
+            padding: 30px;
         }
-
-        .vision-content h3 {
+        .vision-content-overlay h3 {
             font-size: 1.2rem;
             font-weight: 500;
-            color: var(--text-light);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            /* 어두운 그림자를 추가하여 가독성 확보 */
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
         }
-
-        .vision-content p {
-            font-size: 2.5rem;
+        .vision-content-overlay p {
+            font-size: 2.2rem;
             font-weight: 900;
-            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
             margin: 0;
+            color: #faf3b0; 
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
         }
 
         /* 3. 핵심 서비스 (Services) */
@@ -556,26 +542,62 @@
             line-height: 1;
         }
 
-        /* 반응형 디자인 */
+        /* ============================================= */
+        /* ===== 반응형 디자인 (최적화 버전) ===== */
+        /* ============================================= */
+
+        /* 화면 너비 992px 이하 (태블릿 등) */
         @media (max-width: 992px) {
             .details-grid {
                 grid-template-columns: 1fr;
             }
         }
 
+        /* 화면 너비 768px 이하 (모바일) */
         @media (max-width: 768px) {
+            /* 공통 스타일 */
             h2.section-title { font-size: 2.2rem; }
             .nav-links { display: none; }
             #home { height: 70vh; }
             #home h1 { font-size: 2.8rem; }
             .about-content { flex-direction: column; }
-            .logo-item { width: calc(50% - 15px); height: 90px; }
-        }
-        
-        @media (max-width: 480px) {
-            .logo-item { width: 100%; height: 100px; }
+
+            /* 1. Our Work & Partners 로고 크기 조정 (한 줄에 3개) */
+            .logo-item {
+                width: calc(33.33% - 18px);
+                height: auto;
+                aspect-ratio: 4/3;
+                padding: 10px;
+            }
+
+            /* 2. Our Services 모바일 가독성 개선 */
+            .details-grid {
+                gap: 15px;
+                background-color: transparent;
+                padding: 0;
+                box-shadow: none;
+            }
+            .detail-item {
+                background-color: #FFFBEB;
+                padding: 25px;
+                border-radius: 12px;
+                border: 1px solid #FEEBAA;
+            }
+
+            /* 3. Our Solutions 모바일 가시성 개선 */
+            .solution-card {
+                background-color: #E3F2FD;
+                border: 1px solid #90CAF9;
+            }
         }
 
+        /* 화면 너비 480px 이하 (더 작은 모바일) */
+        @media (max-width: 480px) {
+            /* Our Work & Partners 로고 크기 조정 (한 줄에 2개) */
+            .logo-item {
+                width: calc(50% - 15px);
+            }
+        }
     </style>
 </head>
 <body>
@@ -613,23 +635,20 @@
                 <h2 class="section-title">About Us</h2>
                 <p class="section-subtitle">데이터 기반 진단과 전략, ESG 경영의 표준을 만듭니다.</p>
                 <div class="about-content">
-                    <div class="about-text">
-                        <h3>지속가능한 성장을 위한 최고의 파트너</h3>
-                        <p>기업의 ESG 활동을 체계화하여 새로운 비즈니스 가치 창출합니다.</p>
-                        <p>이에스지표준원은복잡한 규제와 시장 요구에 대응하는 전문 ESG 솔루션을 제공합니다. 저희는 K-ESG, GRI, SASB 등 국내외 기준을 기반으로 기업의 현황을 정확히 진단하고, 지속가능한 성장을 위한 최적의 로드맵을 제시하는 든든한 파트너입니다.</p>
-                    </div>
-                    <div class="about-vision">
-                        <svg class="infinity-svg" viewBox="0 0 200 100">
-                            <path d="M50,50 C-10,10 150,10 150,50 C210,90 50,90 50,50 Z" />
-                        </svg>
-                        <div class="vision-content">
-                            <h3>OUR VISION</h3>
-                            <p>측정 = 가치</p>
-                        </div>
+                <div class="about-text">
+                    <h3>지속가능한 성장을 위한 최고의 파트너</h3>
+                    <p>기업의 ESG 활동을 체계화하여 새로운 비즈니스 가치 창출합니다.</p>
+                    <p>이에스지표준원은복잡한 규제와 시장 요구에 대응하는 전문 ESG 솔루션을 제공합니다. 저희는 K-ESG, GRI, SASB 등 국내외 기준을 기반으로 기업의 현황을 정확히 진단하고, 지속가능한 성장을 위한 최적의 로드맵을 제시하는 든든한 파트너입니다.</p>
+                </div>
+                <div class="about-vision">
+                    <div class="vision-content-overlay">
+                        <h3>OUR VISION</h3>
+                        <p>보이지 않는 가치를,<br>보이는 성과로.</p>
                     </div>
                 </div>
             </div>
-        </section>
+            </div>
+        </section>        
 
         <!-- 3. 핵심 서비스 (Services) -->
         <section id="services" class="fade-in-section">
